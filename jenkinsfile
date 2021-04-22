@@ -1,21 +1,28 @@
 pipeline {
     agent any
-
+    tools {
+        terraform 'Terraform'
+    }
     stages {
-        stage('Build') {
+        stage('Git Checkout') {
             steps {
-                echo 'Building the World'
+                git branch: 'main', url: 'https://github.com/Sanoj404/12terraformprojectdemo.git'
+            }
+        } 
+        stage('Terraform Init') {
+            steps {
+                sh label: '', script: 'terraform init'
             }
         }    
-        stage('Test') {
+        stage('Terraform Plan') {
             steps {
-                echo 'Testing the World'
+                sh label: '', script: 'terraform plan'
             }
-        }    
-        stage('Deploy') {
+        }   
+        stage('Terraform Apply') {
             steps {
-                echo 'Deploying the World'
-            } 
+                sh label: '', script: 'terraform apply --auto-approve'
+            }
         }
     }
 }  
